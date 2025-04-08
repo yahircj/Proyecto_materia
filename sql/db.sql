@@ -11,6 +11,14 @@ CREATE TABLE EstadosPedidos (
     estado VARCHAR(50) NOT NULL
 );
 
+--Crear tabla de Usuarios
+CREATE TABLE Usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    edad INT NOT NULL,
+    correo VARCHAR(100) UNIQUE NOT NULL
+);
+
 -- Crear tabla de Clientes
 CREATE TABLE Clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
