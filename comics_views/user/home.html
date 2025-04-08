@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>home - COMICS</title>
+        <link rel="stylesheet" href="../css/index.css">
+        <link rel="stylesheet" href="../css/home.css">
+    </head>
+
+    <body>
+        <div class="appbar">
+            <div class="icono">
+                <img src="../img/appbar/comic.png" alt="Icono" onclick="location.href='home.html'" style="cursor: pointer;">
+            </div>
+            <div class="searchbar">
+                <input type="text" placeholder="Busca tu comic...">
+            </div>
+            <div class="user">
+                <!-- Checkbox oculto para controlar la visibilidad del botón -->
+                <input type="checkbox" id="logoutToggle" class="logout-toggle">
+                <!-- Label asociado al checkbox (la imagen del avatar) -->
+                <label for="logoutToggle" class="avatar-label">
+                    <img src="../img/appbar/avatar.png" alt="Usuario" style="cursor: pointer;">
+                </label>
+                <!-- Botón "Cerrar sesión" -->
+                <div class="logout-button">
+                    <a href="../login.html">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="opciones">
+            <select class="form-select form-select-sm cbg" aria-label="Small select example">
+                <option selected>Categoría</option>
+                <option selected>Terror</option>
+                <option selected>Acción</option>
+                <option selected>Comedia</option>
+            </select>
+            <select class="form-select form-select-sm cbg" aria-label="Small select example">
+                <option selected>Editorial</option>
+                <option selected>Editorial 1</option>
+                <option selected>Editorial 2</option>
+            </select>
+        </div>
+        <div id="comics">
+            <div class="comic-item">
+                <img src="../img/comics/batman1.jpg" alt="BATMAN 1">
+                <h3>BATMAN 1</h3>
+                <button class="stock-btn" onclick="location.href='venta.html'">Comprar</button>
+            </div>
+            
+            <div class="comic-item">
+                <img src="../img/comics/spiderman1.jpg" alt="SPIDERMAN 1">
+                <h3>SPIDERMAN 1</h3>
+                <button class="stock-btn">Comprar</button>
+            </div>
+        
+            <div class="comic-item">
+                <img src="../img/comics/superman1.jpg" alt="SUPERMAN 1">
+                <h3>SUPERMAN 1</h3>
+                <button class="stock-btn">Comprar</button>
+            </div>
+        </div>
+        
+    </body>
+</html>

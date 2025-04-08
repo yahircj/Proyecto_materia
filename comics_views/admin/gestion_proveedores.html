@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Proveedores</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/gestion_proveedores.css">
+</head>
+<body>
+    <!-- Barra de aplicación (appbar) -->
+    <div class="appbar">
+        <div class="icono">
+            <img src="../img/appbar/comic.png" alt="Icono" onclick="location.href='home.html'" style="cursor: pointer;">
+        </div>
+        <div class="searchbar">
+            <input type="text" placeholder="Busca tu comic...">
+        </div>
+        <div class="user">
+            <!-- Checkbox oculto para controlar la visibilidad del botón -->
+            <input type="checkbox" id="logoutToggle" class="logout-toggle">
+            <!-- Label asociado al checkbox (la imagen del avatar) -->
+            <label for="logoutToggle" class="avatar-label">
+                <img src="../img/appbar/avatar.png" alt="Usuario" style="cursor: pointer;">
+            </label>
+            <!-- Botón "Cerrar sesión" -->
+            <div class="logout-button">
+                <a href="../login.html">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1 class="titulo">Proveedores</h1>
+        <div class="tabla-container">
+            <table class="tabla-clientes">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>E-mail</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Abastecimiento</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaProveedores"></tbody>
+            </table>
+        </div>
+        <!-- Botón "Agregar Proveedor" en la esquina inferior derecha -->
+        <button class="btn-agregar" onclick="window.location.href='agregar_proveedor.html'">Agregar Proveedor</button>
+    </div>
+
+    <script>
+        // Función para cargar los proveedores desde localStorage
+        function cargarProveedores() {
+            let listaProveedores = document.getElementById("listaProveedores");
+            listaProveedores.innerHTML = "";
+            let proveedores = JSON.parse(localStorage.getItem("proveedores")) || [];
+            proveedores.forEach((proveedor, index) => {
+                let fila = `
+                    <tr>
+                        <td>${proveedor.nombre}</td>
+                        <td>${proveedor.email}</td>
+                        <td>${proveedor.telefono}</td>
+                        <td>${proveedor.direccion}</td>
+                        <td>${proveedor.abastecimiento}</td>
+                        <td>
+                            <span class="update-btn" onclick="editarProveedor(${index})">Actualizar</span>
+                            <button class="btn-eliminar" onclick="eliminarProveedor(${index})">
+                                <img src="img/appbar/borrar.png" alt="Eliminar">
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                listaProveedores.innerHTML += fila;
+            });
+        }
+
+        // Función para eliminar un proveedor
+        function eliminarProveedor(index) {
+            let proveedores = JSON.parse(localStorage.getItem("proveedores")) || [];
+            proveedores.splice(index, 1); // Elimina el proveedor en la posición index
+            localStorage.setItem("proveedores", JSON.stringify(proveedores)); // Actualiza localStorage
+            cargarProveedores(); // Recarga la tabla
+        }
+
+        // Función para editar un proveedor
+        function editarProveedor(index) {
+            // Redirige a una página de edición o muestra un formulario
+            alert("Editar proveedor con índice: " + index);
+            // window.location.href = `editar_proveedor.html?id=${index}`;
+        }
+
+        // Cargar proveedores al iniciar la página
+        document.addEventListener("DOMContentLoaded", cargarProveedores);
+    </script>
+</body>
+</html>
