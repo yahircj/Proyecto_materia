@@ -1,0 +1,40 @@
+services:
+  api:
+    container_name: pm_api
+    build: ./api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./api:/api:z
+    environment:
+      DB_HOST: db
+      DB_USER: comics
+      DB_PASSWORD: SuperComics_2025
+      DB_NAME: comics
+    depends_on:
+      - db
+    restart: unless-stopped
+  flask:
+    container_name: pm_flask
+    build: ./app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app:z
+    depends_on: api
+  db:
+    container_name: pm_db
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: comics
+      MYSQL_USER: comics
+      MYSQL_ROOT_PASSWORD: SuperComics_2025
+      MYSQL_PASSWORD: SuperComics_2025
+    volumes:
+      - ./sql/db.sql:/docker-entrypoint-initdb.d/db.sql:z
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
