@@ -14,14 +14,7 @@ services:
     depends_on:
       - db
     restart: unless-stopped
-  flask:
-    container_name: pm_flask
-    build: ./app
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./app:/app:z
-    depends_on: api
+
   db:
     container_name: pm_db
     image: mysql:latest
