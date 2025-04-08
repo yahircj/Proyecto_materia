@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Cómic</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/informaciin.css">
+</head>
+<body>
+    <div class="appbar">
+        <div class="icono">
+            <img src="../img/appbar/comic.png" alt="Icono" onclick="location.href='home.html'" style="cursor: pointer;">
+        </div>
+        <div class="searchbar">
+            <input type="text" placeholder="Busca tu comic...">
+        </div>
+        <div class="user">
+            <!-- Checkbox oculto para controlar la visibilidad del botón -->
+            <input type="checkbox" id="logoutToggle" class="logout-toggle">
+            <!-- Label asociado al checkbox (la imagen del avatar) -->
+            <label for="logoutToggle" class="avatar-label">
+                <img src="../img/appbar/avatar.png" alt="Usuario" style="cursor: pointer;">
+            </label>
+            <!-- Botón "Cerrar sesión" -->
+            <div class="logout-button">
+                <a href="../login.html">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+        <div class="comic-container">
+            <div class="comic-image">
+                <img src="../img/comics/batman1.jpg" alt="BATMAN 1">
+            </div>
+            <div class="comic-details">
+                <h2>Información</h2>
+                <p><strong>BATMAN 1</strong></p>
+                <p>Editorial: <strong>fulana</strong></p>
+                <p>Categoría: <strong>2</strong></p>
+                <p>Stock actual: <span class="stock">Cantidad: <input type="number" value="32" min="0"></span></p>
+                <p>Precio: <strong>80.0$</strong></p>
+                <p>Proveedor: <strong>cometa</strong></p>
+                <p>Fecha de lanzamiento: <strong>7/12/2024</strong></p>
+            </div>
+            <div class="comic-supply">
+                <h2>Último abastecimiento:</h2>
+                <p><strong>7 de diciembre 2024</strong></p>
+                <p class="description">Descripción: Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+            <div class="comic-contact">
+                <h2>id: 1111</h2>
+                <h2>Contacto</h2>
+                <p>Email proveedor: <strong>uncorreox@gmail.com</strong></p>
+                <p>Teléfono proveedor: <strong>1111 111 111</strong></p>
+                <button class="edit-btn" onclick="location.href='gestion_proveedores.html'">Editar proveedor</button>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+.titulo {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.tabla-container {
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.tabla-clientes {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-clientes th, .tabla-clientes td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.tabla-clientes th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.tabla-clientes tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+}
+
+.btn-eliminar {
+    color: white;
+    background-color: #F47777;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 6px;
+    cursor: pointer;
+}
+
+.btn-eliminar img {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-eliminar:hover {
+    background-color: #ff4d4d;
+}

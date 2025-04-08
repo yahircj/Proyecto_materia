@@ -1,0 +1,56 @@
+.comic-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    gap: 20px;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.comic-image img {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 5px;
+}
+
+.comic-details, .comic-supply, .comic-contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    font-size: 18px;
+    color: #5a2d82;
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 5px 0;
+}
+
+.stock {
+    display: flex;
+    align-items: center;
+    background: #ddd;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+input[type="number"] {
+    width: 50px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+}
+
+.edit-btn {
+    background: #7f6edb;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}

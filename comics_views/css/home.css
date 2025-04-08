@@ -1,0 +1,77 @@
+.opciones{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    gap: 30px;
+}
+
+
+#btn1 {background-color: #77BCF4;}
+
+#btn2 {background-color: #F47777;}
+
+#btn3 {background-color: #F4779F;}
+
+#btn4 {background-color: #7788F4;}
+#btn5 {background-color: #f7f25d;}
+
+.opciones button:hover {
+    filter: brightness(90%);
+    cursor: pointer;
+}
+.opciones button{
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+#comics {
+    display: grid;
+    grid-template-columns: repeat(5, 250px);
+    gap: 25px; 
+    padding: 10px;
+    max-width: 100%;
+    justify-content: center;
+}
+
+#comics img{
+    align-items: center;
+    max-width: 200px;
+    max-height: 285px;
+}
+.comic-item {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between
+}
+
+.comic-item img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.comic-item h3 {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.stock-btn {
+    background-color: #7788F4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.stock-btn:hover {
+    background-color: #f57ab8;
+}
