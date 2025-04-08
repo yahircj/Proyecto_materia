@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Pedido</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Detalle de Pedido #{{ pedido.id }}</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Información del Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>ID del Pedido:</strong> {{ pedido.id }}</p>
+                        <p><strong>Cliente ID:</strong> {{ pedido.cliente_id }}</p>
+                        <p><strong>Fecha:</strong> {{ pedido.fecha_pedido }}</p>
+                        <p>
+                            <strong>Estado:</strong> 
+                            {% if pedido.estado_id == 1 %}
+                                <span class="badge bg-warning">Pendiente</span>
+                            {% elif pedido.estado_id == 2 %}
+                                <span class="badge bg-info">En proceso</span>
+                            {% elif pedido.estado_id == 3 %}
+                                <span class="badge bg-success">Completado</span>
+                            {% elif pedido.estado_id == 4 %}
+                                <span class="badge bg-danger">Cancelado</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ estados_dict[pedido.estado_id].nombre if pedido.estado_id in estados_dict else "Desconocido" }}</span>
+                            {% endif %}
+                        </p>
+                        <p><strong>Total:</strong> ${{ pedido.total }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="card-title mb-0">Acciones</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('agregar_producto_pedido', pedido_id=pedido.id) }}" class="btn btn-primary">Agregar Producto</a>
+                            <a href="{{ url_for('editar_estado_pedido', pedido_id=pedido.id) }}" class="btn btn-warning">Cambiar Estado</a>
+                            <a href="{{ url_for('pedidos') }}" class="btn btn-secondary">Volver a la Lista</a>
+                            <a href="{{ url_for('eliminar_pedido_view', pedido_id=pedido.id) }}" class="btn btn-danger" 
+                               onclick="return confirm('¿Está seguro de eliminar este pedido?')">Eliminar Pedido</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3 class="card-title mb-0">Productos en el Pedido</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detalle in detalles %}
+                        <tr>
+                            <td>{{ productos[detalle.producto_id].nombre if detalle.producto_id in productos else "Producto #" ~ detalle.producto_id }}</td>
+                            <td>{{ detalle.cantidad }}</td>
+                            <td>${{ detalle.precio_unitario }}</td>
+                            <td>${{ detalle.subtotal }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">No hay productos en este pedido</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">Total:</th>
+                            <th>${{ pedido.total }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

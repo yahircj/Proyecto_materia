@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #34495e;
+        }
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .welcome-message h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .welcome-message p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Inicio</a>
+        <a href="{{ url_for('clientes') }}">Clientes</a>
+        <a href="{{ url_for('productos') }}">Productos</a>
+        <a href="{{ url_for('proveedores') }}">Proveedores</a>
+    </div>
+
+    <div class="content">
+        <div class="welcome-message">
+            <h1>¡Bienvenido al Panel de Administración!</h1>
+            <p>Desde aquí puedes gestionar todos los aspectos de tu negocio.</p>
+            <p>Selecciona una opción del menú superior para comenzar.</p>
+        </div>
+    </div>
+    <h2>Iniciar Sesión</h2>
+    <form method="POST">
+        <label>Usuario:</label><br>
+        <input type="text" name="username" required><br>
+        <label>Contraseña:</label><br>
+        <input type="password" name="password" required><br><br>
+        <button type="submit">Ingresar</button>
+    </form>
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
