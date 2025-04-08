@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores - COMICS</title>
+    <link rel="stylesheet" href="../CSS/proveedores.css">
+    <link rel="stylesheet" href="../CSS/index.css">
+</head>
+<body>
+
+    <!-- Barra de navegación -->
+    <div class="appbar">
+        <div class="icono">
+            <img src="../img/appbar/comic.png" alt="Icono" onclick="location.href='home.html'" style="cursor: pointer;">
+        </div>
+        <div class="searchbar">
+            <input type="text" placeholder="Busca tu comic...">
+        </div>
+        <div class="user">
+            <!-- Checkbox oculto para controlar la visibilidad del botón -->
+            <input type="checkbox" id="logoutToggle" class="logout-toggle">
+            <!-- Label asociado al checkbox (la imagen del avatar) -->
+            <label for="logoutToggle" class="avatar-label">
+                <img src="../img/appbar/avatar.png" alt="Usuario" style="cursor: pointer;">
+            </label>
+            <!-- Botón "Cerrar sesión" -->
+            <div class="logout-button">
+                <a href="../login.html">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="proveedores-container">
+        <h2>Seleccionar Proveedor</h2>
+        
+        <select class="form-select">
+            <option selected>Proveedor</option>
+            <option>Proveedor 1</option>
+            <option>Proveedor 2</option>
+            <option>Proveedor 3</option>
+        </select>
+        
+        <a href="#" onclick="location.href='gestion_proveedores.html'" style="cursor: pointer;">Ver detalles proveedores</a>
+
+        <!-- Información del proveedor -->
+        <div class="proveedor-info">
+            <p>Proveedor: <strong>cometa</strong></p>
+            <p>Precio por pieza: <strong>80.0$</strong></p>
+
+            <label for="categoria">Categoría:</label>
+            <select id="categoria">
+                <option>Acción</option>
+                <option>Terror</option>
+                <option>Gore</option>
+                <option>Aventura</option>
+                <option>Rn cntifsf</option>
+            </select>
+
+            <!-- Selector de cantidad -->
+            <div class="cantidad">
+                <label for="cantidad">Piezas:</label>
+                <button onclick="cambiarCantidad(-1)">-</button>
+                <input type="number" id="cantidad" value="5" min="1">
+                <button onclick="cambiarCantidad(1)">+</button>
+            </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="contacto">
+            <h3>Contacto</h3>
+            <p>Email proveedor: <a href="mailto:uncorreox@gmail.com">uncorreox@gmail.com</a></p>
+            <p>Teléfono proveedor: <strong>1111 111 111</strong></p>
+        </div>
+        
+        <!-- Subtotal y botón de pedido -->
+        <div class="subtotal">
+            <p><strong>Subtotal: 400.0$</strong></p>
+            <button class="btn-pedido">Hacer pedido</button>
+        </div>
+    </div>
+
+    <!-- Script para el contador de piezas -->
+    <script>
+        function cambiarCantidad(valor) {
+            let cantidadInput = document.getElementById("cantidad");
+            let nuevaCantidad = parseInt(cantidadInput.value) + valor;
+            if (nuevaCantidad >= 1) {
+                cantidadInput.value = nuevaCantidad;
+            }
+        }
+    </script>
+
+</body>
+</html>

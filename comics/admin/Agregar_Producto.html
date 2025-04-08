@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../CSS/agregar_producto.css">
+</head>
+<body>
+
+    <div class="appbar">
+        <div class="icono">
+            <img src="../img/appbar/comic.png" alt="Icono" onclick="location.href='home.html'" style="cursor: pointer;">
+        </div>
+        <div class="searchbar">
+            <input type="text" placeholder="Busca tu comic...">
+        </div>
+        <div class="user">
+            <!-- Checkbox oculto para controlar la visibilidad del botón -->
+            <input type="checkbox" id="logoutToggle" class="logout-toggle">
+            <!-- Label asociado al checkbox (la imagen del avatar) -->
+            <label for="logoutToggle" class="avatar-label">
+                <img src="../img/appbar/avatar.png" alt="Usuario" style="cursor: pointer;">
+            </label>
+            <!-- Botón "Cerrar sesión" -->
+            <div class="logout-button">
+                <a href="../login.html">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Agregar Nuevo Producto</h2>
+        <form id="formProducto">
+            <input type="text" id="id" placeholder="ID del producto" required>
+            <input type="text" id="nombre" placeholder="Nombre del producto" required>
+            <input type="text" id="categoria" placeholder="Categoría" required>
+            <input type="date" id="fechaLanzamiento" required>
+            <input type="number" id="precio" placeholder="Precio" required>
+            <button type="button" class="btn-save" onclick="guardarProducto()">Guardar Producto</button>
+        </form>
+    </div>
+    <script>
+        function guardarProducto() {
+            let id = document.getElementById("id").value;
+            let nombre = document.getElementById("nombre").value;
+            let categoria = document.getElementById("categoria").value;
+            let fechaLanzamiento = document.getElementById("fechaLanzamiento").value;
+            let precio = document.getElementById("precio").value;
+            if (id && nombre && categoria && fechaLanzamiento && precio) {
+                let productos = JSON.parse(localStorage.getItem("productos")) || [];
+                productos.push({ id, nombre, categoria, fechaLanzamiento, precio });
+                localStorage.setItem("productos", JSON.stringify(productos));
+                alert("Producto agregado exitosamente.");
+                window.location.href = "gestionar_productos.html";
+            } else {
+                alert("Por favor, completa todos los campos.");
+            }
+        }
+    </script>
+</body>
+</html>
