@@ -37,17 +37,14 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        .welcome-message {
-            text-align: center;
-            padding: 40px 20px;
+        .producto-bajo-stock {
+            background-color: #ffe6e6;
+            padding: 10px;
+            border-radius: 5px;
         }
-        .welcome-message h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        .welcome-message p {
-            color: #7f8c8d;
-            font-size: 1.1em;
+        .alerta-stock {
+            color: red;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -59,23 +56,28 @@
         <a href="{{ url_for('proveedores') }}">Proveedores</a>
     </div>
 
-    <h2>Lista de Productos</h2>
-    <a href="{{ url_for('nuevo_producto') }}">Agregar Nuevo Producto</a>
-    <ul>
-        {% for producto in productos %}
-            <li>
-                <strong>{{ producto["nombre"] }}</strong><br>
-                💲 Precio: ${{ producto["precio"] }}<br>
-                📦 Stock: {{ producto["stock"] }}<br>
-                📝 Descripción: {{ producto["descripcion"] }}<br>
-                🏷️ Categoría ID: {{ producto["categoria_id"] }}<br>
-                📚 Editorial ID: {{ producto["editorial_id"] }}<br>
-                🚚 Proveedor ID: {{ producto["proveedor_id"] }}<br>
-                [<a href="{{ url_for('editar_producto', producto_id=producto['id']) }}">Editar</a>]
-                [<a href="{{ url_for('eliminar_producto_view', producto_id=producto['id']) }}">Eliminar</a>]
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
+    <div class="content">
+        <h2>Lista de Productos</h2>
+        <a href="{{ url_for('nuevo_producto') }}">Agregar Nuevo Producto</a>
+        <ul>
+            {% for producto in productos %}
+                <li class="{% if producto.stock <= 5 %}producto-bajo-stock{% endif %}">
+                    <strong>{{ producto.nombre }}</strong><br>
+                    Precio: ${{ producto.precio }}<br>
+                    Stock: {{ producto.stock }}
+                    {% if producto.stock <= 5 %}
+                        <span class="alerta-stock">Stock bajo</span>
+                    {% endif %}<br>
+                    Descripción: {{ producto.descripcion }}<br>
+                    Categoría ID: {{ producto.categoria_id }}<br>
+                    Editorial ID: {{ producto.editorial_id }}<br>
+                    Proveedor ID: {{ producto.proveedor_id }}<br>
+                    [<a href="{{ url_for('editar_producto', producto_id=producto.id) }}">Editar</a>]
+                    [<a href="{{ url_for('eliminar_producto_view', producto_id=producto.id) }}">Eliminar</a>]
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>

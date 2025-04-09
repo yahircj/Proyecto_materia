@@ -1,0 +1,24 @@
+<h2>Registrar Abastecimiento</h2>
+<form method="POST">
+    <label>Proveedor:</label>
+    <select name="proveedor_id">
+        {% for proveedor in proveedores %}
+            <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Producto:</label>
+    <select name="producto_id">
+        {% for producto in productos %}
+            <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Cantidad a abastecer:</label>
+    <input type="number" name="cantidad" min="1" required>
+
+    <label>Fecha de abastecimiento:</label>
+    <input type="date" name="fecha_abastecimiento" required>
+
+    <button type="submit">Registrar Abastecimiento</button>
+</form>

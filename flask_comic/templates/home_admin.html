@@ -91,6 +91,27 @@
             color: #2c3e50;
             font-weight: bold;
         }
+
+        .stock-alert {
+            margin-top: 40px;
+        }
+
+        .stock-alert h2 {
+            color: #c0392b;
+        }
+
+        .stock-alert ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .stock-alert li {
+            background-color: #ffe6e6;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 5px solid #c0392b;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -128,10 +149,20 @@
                 <div class="stat-value">{{ total_pedidos }}</div>
             </div>
         </div>
-    </div>
-</body>
 
-</html>
+        {% if productos_bajo_stock %}
+        <div class="stock-alert">
+            <h2>⚠ Productos con stock bajo</h2>
+            <ul>
+                {% for producto in productos_bajo_stock %}
+                    <li>
+                        <strong>{{ producto.nombre }}</strong> - Stock actual: {{ producto.stock }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
 </body>
 
 </html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Abastecimientos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            background-color: #34495e;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Inicio</a>
+        <a href="{{ url_for('productos') }}">Productos</a>
+        <a href="{{ url_for('proveedores') }}">Proveedores</a>
+        <a href="{{ url_for('abastecimientos') }}">Abastecimientos</a>
+    </div>
+
+    <div class="container">
+        <h2>Historial de Abastecimientos</h2>
+
+        <a href="{{ url_for('nuevo_abastecimiento') }}" class="btn">Nuevo Abastecimiento</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Proveedor</th>
+                    <th>Fecha de Abastecimiento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ab in abastecimientos %}
+                    <tr>
+                        <td>{{ ab.id }}</td>
+                        <td>{{ productos[ab.producto_id] }}</td>
+                        <td>{{ proveedores[ab.proveedor_id] }}</td>
+                        <td>{{ ab.fecha_abastecimiento }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

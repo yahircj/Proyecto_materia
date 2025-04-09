@@ -1,0 +1,25 @@
+<h2>Promociones para Clientes Frecuentes</h2>
+
+{% if clientes %}
+    <h3>Clientes Frecuentes:</h3>
+    <ul>
+        {% for cliente in clientes %}
+            <li>{{ cliente.nombre }} ({{ cliente.email }})</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay clientes frecuentes registrados actualmente.</p>
+{% endif %}
+
+<hr>
+
+<h3>Promociones Disponibles:</h3>
+{% if promociones %}
+    <ul>
+        {% for promo in promociones %}
+            <li>{{ promo.detalle_promocion }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay promociones registradas.</p>
+{% endif %}

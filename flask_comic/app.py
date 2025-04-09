@@ -1,33 +1,59 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from utils.api_client import (
-    #clientes
+    # Clientes
     obtener_clientes, crear_cliente, obtener_cliente,
     actualizar_cliente, eliminar_cliente, 
-    #productos
+    # Productos
     obtener_productos, 
     crear_producto, obtener_producto, 
     actualizar_producto, eliminar_producto,
-    # proveedores
+    # Proveedores
     obtener_proveedores, crear_proveedor, obtener_proveedor,
     actualizar_proveedor, eliminar_proveedor,
-        # Pedidos
+    # Pedidos
     obtener_pedidos, crear_pedido, obtener_pedido,
     actualizar_pedido, eliminar_pedido,
     # Detalles de pedidos
     obtener_detalles_pedido, crear_detalle_pedido, obtener_detalle_pedido,
     # Estados de pedidos
-    obtener_estados_pedido, obtener_estado_pedido
+    obtener_estados_pedido, obtener_estado_pedido,
+    # Abastecimientos
+    obtener_abastecimientos, crear_abastecimiento,
+    # Promociones
+    obtener_promociones
 )
 
-
 app = Flask(__name__)
+app.secret_key = 'clave_secreta_admin_segura'  # Necesario para usar sesiones
 
+# 🟢 LOGIN
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
 
+        # Validación estática para un solo administrador
+        if email == "admin@comic.com" and password == "admin123":
+            session["usuario"] = email
+            return redirect(url_for("home"))
+        else:
+            return render_template("login.html", error="Correo o contraseña incorrectos")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("usuario", None)
+    return redirect(url_for("login"))
+
+# 🟢 DASHBOARD
 @app.route("/")
 def home():
-    return render_template("home_admin.html")
+    productos = obtener_productos()
+    productos_bajo_stock = [p for p in productos if p["stock"] <= 5]
+    return render_template("home_admin.html", productos_bajo_stock=productos_bajo_stock)
 
-#Clientes
+# Clientes
 @app.route("/clientes")
 def clientes():
     lista_clientes = obtener_clientes()
@@ -62,13 +88,11 @@ def editar_cliente(cliente_id):
         return redirect(url_for("clientes"))
     return render_template("cliente_form.html", cliente=cliente)
 
-
 @app.route("/clientes/eliminar/<int:cliente_id>")
 def eliminar_cliente_view(cliente_id):
     eliminar_cliente(cliente_id)
     return redirect(url_for("clientes"))
 
-#productos
 # Productos
 @app.route("/productos")
 def productos():
@@ -159,41 +183,64 @@ def pedidos():
 
 @app.route("/pedidos/nuevo", methods=["GET", "POST"])
 def nuevo_pedido():
-    if request.method == "POST":
-        # Crear el pedido principal
-        pedido_data = {
-            "cliente_id": int(request.form["cliente_id"]),
-            "fecha_pedido": request.form["fecha_pedido"],
-            "estado_id": 1,  # Estado inicial (pendiente)
-            "total": float(request.form["total"])
-        }
-        
-        # Crear el pedido en la API
-        exito = crear_pedido(pedido_data)
-        
-    
-    # Para el formulario necesitamos la lista de clientes
     clientes = obtener_clientes()
-    return render_template("pedido_form.html", pedido=None, clientes=clientes)
+    productos = obtener_productos()
+
+    if request.method == "POST":
+        cliente_id = int(request.form["cliente_id"])
+        productos_ids = request.form.getlist("producto_id")
+        cantidades = request.form.getlist("cantidad")
+
+        total_pedido = 0
+        detalles = []
+
+        for producto_id, cantidad in zip(productos_ids, cantidades):
+            cantidad = int(cantidad)
+            if cantidad > 0:
+                producto = obtener_producto(int(producto_id))
+                subtotal = producto["precio"] * cantidad
+                total_pedido += subtotal
+
+                detalles.append({
+                    "producto_id": int(producto_id),
+                    "cantidad": cantidad,
+                    "precio_unitario": producto["precio"],
+                    "subtotal": subtotal
+                })
+
+        pedido_data = {
+            "cliente_id": cliente_id,
+            "estado_id": 1,
+            "total": total_pedido
+        }
+        pedido = crear_pedido(pedido_data)
+
+        for detalle in detalles:
+            detalle_data = detalle.copy()
+            detalle_data["pedido_id"] = pedido["id"]
+            crear_detalle_pedido(detalle_data)
+
+            producto = obtener_producto(detalle["producto_id"])
+            producto["stock"] -= detalle["cantidad"]
+            actualizar_producto(detalle["producto_id"], producto)
+
+        return redirect(url_for("pedidos"))
+
+    return render_template("pedido_form.html", pedido=None, clientes=clientes, productos=productos)
 
 @app.route("/pedidos/detalle/<int:pedido_id>")
 def detalle_pedido(pedido_id):
     pedido = obtener_pedido(pedido_id)
-    # Obtener todos los detalles de pedidos y filtrar los que pertenecen a este pedido
     todos_detalles = obtener_detalles_pedido()
     detalles_pedido = [detalle for detalle in todos_detalles if detalle.get("pedido_id") == pedido_id]
-    
-    # Obtener información completa de productos para mostrar nombres
     productos = obtener_productos()
     productos_dict = {producto["id"]: producto for producto in productos}
-    
-    # Obtener información del estado
     estados = obtener_estados_pedido()
     estados_dict = {estado["id"]: estado for estado in estados}
-    
+
     return render_template(
-        "pedido_detalle.html", 
-        pedido=pedido, 
+        "pedido_detalle.html",
+        pedido=pedido,
         detalles=detalles_pedido,
         productos=productos_dict,
         estados=estados_dict
@@ -203,69 +250,69 @@ def detalle_pedido(pedido_id):
 def editar_estado_pedido(pedido_id):
     pedido = obtener_pedido(pedido_id)
     estados = obtener_estados_pedido()
-    
+
     if request.method == "POST":
         nuevo_estado_id = int(request.form["estado_id"])
         pedido_actualizado = pedido.copy()
         pedido_actualizado["estado_id"] = nuevo_estado_id
-        
-        exito = actualizar_pedido(pedido_id, pedido_actualizado)
+        actualizar_pedido(pedido_id, pedido_actualizado)
 
-    
     return render_template("pedido_estado_form.html", pedido=pedido, estados=estados)
-
-@app.route("/pedidos/agregar_producto/<int:pedido_id>", methods=["GET", "POST"])
-def agregar_producto_pedido(pedido_id):
-    pedido = obtener_pedido(pedido_id)
-    productos = obtener_productos()
-    
-    if request.method == "POST":
-        producto_id = int(request.form["producto_id"])
-        cantidad = int(request.form["cantidad"])
-        
-        # Obtener el producto para calcular subtotal y verificar stock
-        producto = obtener_producto(producto_id)
-        
-        if producto and producto["stock"] >= cantidad:
-            subtotal = producto["precio"] * cantidad
-            
-            # Crear detalle de pedido
-            detalle_data = {
-                "pedido_id": pedido_id,
-                "producto_id": producto_id,
-                "cantidad": cantidad,
-                "precio_unitario": producto["precio"],
-                "subtotal": subtotal
-            }
-            
-            exito_detalle = crear_detalle_pedido(detalle_data)
-            
-            if exito_detalle:
-                # Actualizar el stock del producto
-                producto_actualizado = producto.copy()
-                producto_actualizado["stock"] = producto["stock"] - cantidad
-                
-                # Actualizar el total del pedido
-                pedido_actualizado = pedido.copy()
-                pedido_actualizado["total"] = pedido["total"] + subtotal
-                
-                exito_producto = actualizar_producto(producto_id, producto_actualizado)
-                exito_pedido = actualizar_pedido(pedido_id, pedido_actualizado)
-                
-    
-    # Filtrar productos con stock disponible
-    productos_disponibles = [p for p in productos if p["stock"] > 0]
-    
-    return render_template(
-        "pedido_agregar_producto.html", 
-        pedido=pedido, 
-        productos=productos_disponibles
-    )
 
 @app.route("/pedidos/eliminar/<int:pedido_id>")
 def eliminar_pedido_view(pedido_id):
     eliminar_pedido(pedido_id)
     return redirect(url_for("pedidos"))
+
+# Abastecimientos
+@app.route("/abastecimientos")
+def listar_abastecimientos():
+    abastecimientos = obtener_abastecimientos()
+    productos = obtener_productos()
+    proveedores = obtener_proveedores()
+
+    productos_dict = {p["id"]: p["nombre"] for p in productos}
+    proveedores_dict = {p["id"]: p["nombre"] for p in proveedores}
+
+    return render_template("abastecimientos.html", 
+        abastecimientos=abastecimientos,
+        productos=productos_dict,
+        proveedores=proveedores_dict
+    )
+
+@app.route("/abastecimientos/nuevo", methods=["GET", "POST"])
+def nuevo_abastecimiento():
+    proveedores = obtener_proveedores()
+    productos = obtener_productos()
+
+    if request.method == "POST":
+        producto_id = int(request.form["producto_id"])
+        proveedor_id = int(request.form["proveedor_id"])
+        cantidad = int(request.form["cantidad"])
+        fecha = request.form["fecha_abastecimiento"]
+
+        data = {
+            "producto_id": producto_id,
+            "proveedor_id": proveedor_id,
+            "fecha_abastecimiento": fecha
+        }
+        crear_abastecimiento(data)
+
+        producto = obtener_producto(producto_id)
+        producto["stock"] += cantidad
+        actualizar_producto(producto_id, producto)
+
+        return redirect(url_for("productos"))
+
+    return render_template("abastecimiento_form.html", proveedores=proveedores, productos=productos)
+
+# Promociones
+@app.route("/promociones")
+def promociones():
+    clientes = obtener_clientes()
+    promociones = obtener_promociones()
+    clientes_frecuentes = [c for c in clientes if c.get("cliente_frecuente")]
+    return render_template("promociones.html", promociones=promociones, clientes=clientes_frecuentes)
 
 if __name__ == "__main__":
     app.run(debug=True)
