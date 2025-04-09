@@ -12,7 +12,7 @@ from routers.detallepedidos import routerDetallePedidos
 from routers.estadospedidos import routerEstadosPedidos
 from routers.fechasabastecimiento import routerFechasAbastecimiento
 from routers.promociones import routerPromociones
-
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
@@ -20,6 +20,14 @@ app = FastAPI(
     title="API de Gestión de Clientes, Usuarios y Productos",
     description="API desarrollada con FastAPI y SQLAlchemy. Soporta autenticación JWT y operaciones CRUD.",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 # Crear tablas automaticamente si no existen

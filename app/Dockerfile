@@ -1,7 +1,6 @@
 FROM python:3.13-alpine
 
-WORKDIR /api
-
+WORKDIR /app
 # Instalar dependencias del sistema
 RUN apk add --no-cache mariadb-dev gcc
 
@@ -12,4 +11,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Comando para ejecutar la aplicación
-CMD ["python", "main.py"]
+CMD ["python", "app.py"]

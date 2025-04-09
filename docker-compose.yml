@@ -3,7 +3,7 @@ services:
     container_name: pm_api
     build: ./api
     ports:
-      - "5000:5000"
+      - "8000:5000"
     volumes:
       - ./api:/api:z
     environment:
@@ -18,10 +18,11 @@ services:
     container_name: pm_flask
     build: ./app
     ports:
-      - "8000:8000"
+      - "5000:5000"
     volumes:
       - ./app:/app:z
-    depends_on: api
+    depends_on: 
+      - api
   db:
     container_name: pm_db
     image: mysql:latest
