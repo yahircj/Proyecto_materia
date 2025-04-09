@@ -29,10 +29,6 @@ def obtener_cliente(cliente_id):
         return response.json()
     return None
 
-import requests
-
-API_BASE_URL = "http://localhost:8000"
-
 # Productos
 def obtener_productos():
     response = requests.get(f"{API_BASE_URL}/productos")

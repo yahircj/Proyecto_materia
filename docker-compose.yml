@@ -3,7 +3,7 @@ services:
     container_name: pm_api
     build: ./api
     ports:
-      - "8000:5000"
+      - "8000:8000"
     volumes:
       - ./api:/api:z
     environment:
