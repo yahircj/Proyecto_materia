@@ -5,6 +5,14 @@ DROP DATABASE IF EXISTS comics;
 CREATE DATABASE IF NOT EXISTS comics;
 USE comics;
 
+
+--Crear tabla de Usuarios
+CREATE TABLE Usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    edad INT NOT NULL,
+    correo VARCHAR(100) UNIQUE NOT NULL
+);
 -- Crear tabla de Estados de Pedido
 CREATE TABLE EstadosPedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
