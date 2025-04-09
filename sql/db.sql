@@ -6,7 +6,7 @@ CREATE DATABASE IF NOT EXISTS comics;
 USE comics;
 
 
---Crear tabla de Usuarios
+-- Crear tabla de Usuarios
 CREATE TABLE Usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
